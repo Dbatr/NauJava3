@@ -1,72 +1,58 @@
 package ru.denis.NauJava3.entity;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import ru.denis.NauJava3.entity.enums.OperationType;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * Сущность финансовой транзакции
+ * Сущность, представляющая финансовую транзакцию в системе.
+ * Хранит информацию о движении денежных средств: сумму, дату,
+ * тип операции, категорию и связанные сущности.
  */
+@Entity
+@Table(name = "transactions")
+@Getter
+@Setter
 public class Transaction {
+    /** Уникальный идентификатор транзакции */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /** Сумма транзакции */
+    @Column(nullable = false)
     private BigDecimal amount;
-    private String category;
-    private String description;
+
+    /** Дата и время совершения транзакции */
+    @Column(nullable = false)
     private LocalDateTime date;
-    private TransactionType type;
 
-    /**
-     * Типы транзакций
-     */
-    public enum TransactionType {
-        INCOME,
-        EXPENSE
-    }
+    /** Описание или комментарий к транзакции */
+    @Column
+    private String description;
 
-    public Long getId() {
-        return id;
-    }
+    /** Тип операции (доход/расход) */
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OperationType type;
 
-    public BigDecimal getAmount() {
-        return amount;
-    }
+    /** Пользователь, совершивший транзакцию */
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public String getCategory() {
-        return category;
-    }
+    /** Счет, по которому проведена транзакция */
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 
-    public String getDescription() {
-        return description;
-    }
+    /** Категория транзакции */
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public TransactionType getType() {
-        return type;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public void setType(TransactionType type) {
-        this.type = type;
-    }
 }
