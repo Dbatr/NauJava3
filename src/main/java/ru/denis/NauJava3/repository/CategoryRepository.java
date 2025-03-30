@@ -1,6 +1,7 @@
 package ru.denis.NauJava3.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 import ru.denis.NauJava3.dao.CategoryRepositoryCustom;
 import ru.denis.NauJava3.entity.Category;
@@ -13,7 +14,7 @@ import java.util.List;
  * Предоставляет методы для выполнения операций с сущностью {@link Category} в базе данных.
  * Расширяет функциональность с помощью пользовательских методов поиска.
  */
-@Repository
+@RepositoryRestResource(path = "categories")
 public interface CategoryRepository extends CrudRepository<Category, Long>,
                                             CategoryRepositoryCustom {
     /**

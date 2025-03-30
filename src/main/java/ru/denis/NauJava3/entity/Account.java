@@ -1,5 +1,9 @@
 package ru.denis.NauJava3.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +19,7 @@ import java.util.List;
 @Table(name = "accounts")
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Account {
     /** Уникальный идентификатор счета */
     @Id
@@ -39,12 +44,14 @@ public class Account {
     private AccountType accountType;
 
     /** Владелец счета */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties("accounts")
     private User user;
 
     /** Список транзакций по счету */
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Transaction> transactions;
 
     /**

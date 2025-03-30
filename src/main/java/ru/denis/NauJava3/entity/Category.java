@@ -1,5 +1,8 @@
 package ru.denis.NauJava3.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +19,7 @@ import java.util.List;
 @Table(name = "categories")
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Category {
     /** Уникальный идентификатор категории */
     @Id
@@ -40,11 +44,13 @@ public class Category {
     private String colorCode;
 
     /** Список транзакций, относящихся к данной категории */
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Transaction> transactions;
 
     /** Список бюджетов, установленных для данной категории */
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Budget> budgets;
 
 }
