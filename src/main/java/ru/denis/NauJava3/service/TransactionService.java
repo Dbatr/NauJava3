@@ -1,34 +1,33 @@
 package ru.denis.NauJava3.service;
 
+import ru.denis.NauJava3.entity.Transaction;
+import ru.denis.NauJava3.entity.enums.OperationType;
 import java.math.BigDecimal;
 
 /**
- * Сервис для управления финансовыми операциями
+ * Сервис для управления финансовыми транзакциями.
  */
 public interface TransactionService {
     /**
-     * Добавляет новый доход
-     * @param amount сумма дохода
-     * @param category категория дохода
-     * @param description описание дохода
+     * Создает транзакцию и обновляет баланс счета
+     * @param accountId ID счета
+     * @param categoryId ID категории
+     * @param amount сумма транзакции
+     * @param description описание транзакции
+     * @param type тип транзакции (доход/расход)
+     * @return созданная транзакция
      */
-    void addIncome(BigDecimal amount, String category, String description);
+    Transaction createTransaction(
+            Long accountId,
+            Long categoryId,
+            BigDecimal amount,
+            String description,
+            OperationType type
+    );
 
     /**
-     * Добавляет новый расход
-     * @param amount сумма расхода
-     * @param category категория расхода
-     * @param description описание расхода
+     * Удаляет транзакцию и восстанавливает баланс счета
+     * @param transactionId ID транзакции
      */
-    void addExpense(BigDecimal amount, String category, String description);
-
-    /**
-     * @return общая сумма всех доходов
-     */
-    BigDecimal getTotalIncome();
-
-    /**
-     * @return общая сумма всех расходов
-     */
-    BigDecimal getTotalExpense();
+    void deleteTransaction(Long transactionId);
 }
