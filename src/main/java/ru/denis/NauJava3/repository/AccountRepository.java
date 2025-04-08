@@ -3,6 +3,7 @@ package ru.denis.NauJava3.repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 import ru.denis.NauJava3.dao.AccountRepositoryCustom;
 import ru.denis.NauJava3.entity.Account;
@@ -14,7 +15,7 @@ import java.util.List;
  * Репозиторий для работы с банковскими счетами.
  * Предоставляет методы для выполнения операций с сущностью Account в базе данных.
  */
-@Repository
+@RepositoryRestResource(path = "accounts")
 public interface AccountRepository extends CrudRepository<Account, Long>,
                                             AccountRepositoryCustom {
 

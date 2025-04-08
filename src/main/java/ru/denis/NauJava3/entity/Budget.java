@@ -1,5 +1,7 @@
 package ru.denis.NauJava3.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +18,7 @@ import java.time.LocalDate;
 @Table(name = "budgets")
 @Getter
 @Setter
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Budget {
     /** Уникальный идентификатор бюджета */
     @Id
@@ -39,12 +42,14 @@ public class Budget {
     private LocalDate periodEnd;
 
     /** Пользователь, которому принадлежит бюджет */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties("budgets")
     private User user;
 
     /** Категория, для которой установлен бюджет */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnoreProperties("budgets")
     private Category category;
 }
