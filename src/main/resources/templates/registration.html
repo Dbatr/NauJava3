@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Регистрация</title>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #2c3e50;
+            line-height: 1.6;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .registration-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #27ae60;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #2980b9;
+        }
+
+        .field-error {
+            color: #a94442;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="registration-container">
+    <form th:action="@{/registration}" method="post" th:object="${userRequest}">
+        <h2>Регистрация нового пользователя</h2>
+
+        <!-- Общее сообщение об ошибке от сервера (например, "Пользователь с таким именем уже существует") -->
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+
+        <!-- Общее сообщение, если есть ошибки валидации -->
+        <div th:if="${#fields.hasErrors('*')}" class="error">
+            Пожалуйста, исправьте ошибки в форме.
+        </div>
+
+        <!-- Поле для имени пользователя -->
+        <div class="form-group">
+            <label for="username">Имя пользователя</label>
+            <input type="text"
+                   id="username"
+                   th:field="*{username}"
+                   required
+                   minlength="3"
+                   maxlength="50"
+                   autocomplete="username"/>
+            <div class="field-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+        </div>
+
+        <!-- Поле для email -->
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email"
+                   id="email"
+                   th:field="*{email}"
+                   required
+                   autocomplete="email"/>
+            <div class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
+
+        <!-- Поле для пароля -->
+        <div class="form-group">
+            <label for="password">Пароль</label>
+            <input type="password"
+                   id="password"
+                   th:field="*{password}"
+                   required
+                   minlength="4"
+                   autocomplete="new-password"/>
+            <div class="field-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+
+        <!-- Кнопка отправки -->
+        <div class="form-group">
+            <button type="submit">Зарегистрироваться</button>
+        </div>
+
+        <div class="login-link">
+            <a th:href="@{/login}">Уже есть аккаунт? Войти</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
